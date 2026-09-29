@@ -13,7 +13,7 @@ Visualização interativa da **elipse** para o projeto *Cônicas no Mundo Real: 
 | GeoGebra | A mesma construção no GeoGebra + comandos passo a passo | 3 |
 | Desafio | Quiz, "descubra a equação", "encontre os focos", placar por equipes | 4 |
 
-**Atalhos na apresentação:** `←` / `→` (ou passador de slides) trocam de seção, `F` ativa a tela cheia.
+**Atalhos:** `←` / `→` (ou passador de slides) trocam de seção · `A` abre o painel Avançado (detalhes e fórmulas) · `F` tela cheia.
 
 ## Rodar localmente
 
@@ -30,6 +30,6 @@ npm run build    # gera a pasta dist/
 
 ## Stack
 
-React 18 · TypeScript · Vite · Three.js (React Three Fiber + drei) · Tailwind CSS · Framer Motion · KaTeX
+React 18 · TypeScript · Vite · Three.js (React Three Fiber + drei) · Tailwind CSS · KaTeX — visual 1-bit monocromático.
 
 Fontes dos dados orbitais: NASA Planetary Fact Sheet; JPL Small-Body Database.
