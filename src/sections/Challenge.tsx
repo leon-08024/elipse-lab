@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Readout, Stage, Tex } from '../components/ui';
 import { Dot, Plane2D, ellipsePath, makeView } from '../components/Plane2D';
 import { QUIZ } from '../data/quiz';
+import { Tri } from '../components/Icons';
 import { ellipseInfo, fmt, reducedEquationTex } from '../math/ellipse';
 
 type Mode = 'quiz' | 'equacao' | 'focos';
@@ -81,8 +82,8 @@ function Quiz({ i, setI, revealed, setRevealed }: { i: number; setI: (n: number)
                 {'ABCD'[j]}
               </span>
               <Rich text={o} />
-              {right && <span className="os ml-auto font-bold">✓</span>}
-              {wrong && <span className="os ml-auto font-bold">✗</span>}
+              {right && <span className="os ml-auto text-sm font-bold">CERTA</span>}
+              {wrong && <span className="os ml-auto text-sm font-bold">ERRADA</span>}
             </button>
           );
         })}
@@ -94,13 +95,13 @@ function Quiz({ i, setI, revealed, setRevealed }: { i: number; setI: (n: number)
       )}
       <div className="mt-6 flex gap-3">
         <button className="btn" onClick={() => setI(Math.max(0, i - 1))} disabled={i === 0}>
-          ◂
+          <Tri dir="l" />
         </button>
         <button className="btn-default" onClick={() => setRevealed(true)} disabled={revealed}>
           Revelar
         </button>
         <button className="btn" onClick={() => setI(Math.min(QUIZ.length - 1, i + 1))} disabled={i === QUIZ.length - 1}>
-          ▸
+          <Tri dir="r" />
         </button>
       </div>
     </div>

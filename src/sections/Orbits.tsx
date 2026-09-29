@@ -83,10 +83,10 @@ function Scene({
       </mesh>
       <Line points={ringPts(scale > 1 ? 0.36 : 0.5)} color="#000" lineWidth={1} dashed dashSize={0.05} gapSize={0.05} />
       <Html center style={{ pointerEvents: 'none' }}>
-        <div className="os translate-y-7 border border-black bg-white px-1 text-[12px] font-bold text-black">Sol · foco</div>
+        <div className="os translate-y-7 whitespace-nowrap border border-black bg-white px-1 text-[12px] font-bold text-black">Sol · foco</div>
       </Html>
 
-      {BODIES.map((bd) => (
+      {BODIES.filter((bd) => scale < 1 || bd.id !== 'halley').map((bd) => (
         <Line
           key={bd.id}
           points={orbitPoints(bd.a, bd.e, scale)}
@@ -162,7 +162,7 @@ export default function Orbits() {
         }
       >
         <div className="frame h-full w-full">
-          <Canvas key={halley ? 'h' : 'p'} camera={{ position: [0, 9, 7], fov: 50 }} dpr={[1, 2]} gl={{ antialias: false }}>
+          <Canvas key={halley ? 'h' : 'p'} camera={{ position: [0, 10, 4.5], fov: 50 }} dpr={[1, 2]} gl={{ antialias: false }}>
             <Scene scale={scale} timeRef={timeRef} playing={playing} speed={speed} selected={selected} spokes={spokes} />
           </Canvas>
         </div>

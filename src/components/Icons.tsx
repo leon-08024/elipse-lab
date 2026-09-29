@@ -83,3 +83,12 @@ export function EllipseLogo() {
     </svg>
   );
 }
+
+/** Triângulo sólido (evita depender de glifos ◂ ▸ na fonte). */
+export function Tri({ dir }: { dir: 'l' | 'r' }) {
+  return (
+    <svg viewBox="0 0 6 10" className="inline-block h-2.5 w-1.5" shapeRendering="crispEdges">
+      <path d={dir === 'r' ? 'M0 0l6 5-6 5z' : 'M6 0L0 5l6 5z'} fill="currentColor" />
+    </svg>
+  );
+}

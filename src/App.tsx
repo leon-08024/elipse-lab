@@ -6,7 +6,7 @@ import Reflection from './sections/Reflection';
 import GeoGebra from './sections/GeoGebra';
 import Challenge from './sections/Challenge';
 import { AdvancedContext } from './components/ui';
-import { EllipseLogo, SectionIcon } from './components/Icons';
+import { EllipseLogo, SectionIcon, Tri } from './components/Icons';
 import { REPO_URL, SECTIONS, type SectionId } from './nav';
 
 const ConeSection = lazy(() => import('./sections/ConeSection'));
@@ -73,14 +73,14 @@ export default function App() {
               <EllipseLogo />
               Elipse Lab
             </button>
-            <button onClick={() => step(-1)} className="hover:underline" disabled={idx === 0}>
-              ◂ Voltar
+            <button onClick={() => step(-1)} className="flex items-center gap-1.5 hover:underline" disabled={idx === 0}>
+              <Tri dir="l" /> Voltar
             </button>
-            <button onClick={() => step(1)} className="hover:underline" disabled={idx === SECTIONS.length - 1}>
-              Avançar ▸
+            <button onClick={() => step(1)} className="flex items-center gap-1.5 hover:underline" disabled={idx === SECTIONS.length - 1}>
+              Avançar <Tri dir="r" />
             </button>
             <button onClick={() => setAdvanced((v) => !v)} className="hover:underline">
-              {advanced ? '✓ ' : ''}Avançado
+              <span className={advanced ? 'bg-black px-1 text-white' : 'px-1'}>Avançado</span>
             </button>
             <button onClick={toggleFullscreen} className="hover:underline">
               Tela cheia
@@ -173,10 +173,10 @@ export default function App() {
                     Reiniciar
                   </button>
                   <button className="btn" onClick={() => step(-1)} disabled={idx === 0}>
-                    ◂
+                    <Tri dir="l" />
                   </button>
                   <button className="btn-default" onClick={() => step(1)} disabled={idx === SECTIONS.length - 1}>
-                    Próximo ▸
+                    Próximo <Tri dir="r" />
                   </button>
                 </div>
               </footer>

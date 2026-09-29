@@ -4,6 +4,7 @@ import { GRUPO } from '../data/grupo';
 import { Facts, More, Tex } from '../components/ui';
 import { Dot, Plane2D, ellipsePath, makeView } from '../components/Plane2D';
 import { dist } from '../math/ellipse';
+import { Tri } from '../components/Icons';
 
 const view = makeView(760, 440, -7, 7);
 const a = 6;
@@ -46,7 +47,7 @@ export default function Home({ go }: { go: (id: SectionId) => void }) {
       </div>
 
       <button className="btn-default h-10 px-6 text-base" onClick={() => go('cone')}>
-        Começar ▸
+        Começar <Tri dir="r" />
       </button>
 
       <More>

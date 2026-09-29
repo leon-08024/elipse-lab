@@ -140,7 +140,7 @@ function Scene({ alpha, beta, h, dandelin, u, view }: { alpha: number; beta: num
         </group>
       )}
 
-      <OrbitControls makeDefault target={[0, 1, 0]} enableDamping minDistance={4} maxDistance={40} />
+      <OrbitControls makeDefault target={[0, 1.5, 0]} enableDamping minDistance={4} maxDistance={40} />
     </>
   );
 }
@@ -150,7 +150,7 @@ const KINDS: ConicKind[] = ['circunferência', 'elipse', 'parábola', 'hipérbol
 export default function ConeSection() {
   const [alpha, setAlpha] = useState(30);
   const [beta, setBeta] = useState(25);
-  const [h, setH] = useState(2);
+  const [h, setH] = useState(2.8);
   const [dandelin, setDandelin] = useState(true);
   const [u, setU] = useState(0);
   const [view, setView] = useState<CamTarget>(null);
@@ -209,7 +209,7 @@ export default function ConeSection() {
               <button className="btn flex-1 px-2" onClick={lookAtPlane}>
                 De frente
               </button>
-              <button className="btn flex-1 px-2" onClick={() => setView({ pos: [9, 10, 12], look: [0, 1, 0], id: ++viewId.current })}>
+              <button className="btn flex-1 px-2" onClick={() => setView({ pos: [6.5, 7.5, 8.5], look: [0, 1.5, 0], id: ++viewId.current })}>
                 3D
               </button>
             </div>
@@ -217,7 +217,7 @@ export default function ConeSection() {
         }
       >
         <div className="frame h-full w-full">
-          <Canvas camera={{ position: [9, 10, 12], fov: 45 }} dpr={[1, 2]} gl={{ antialias: false }}>
+          <Canvas camera={{ position: [6.5, 7.5, 8.5], fov: 45 }} dpr={[1, 2]} gl={{ antialias: false }}>
             <Scene alpha={alpha} beta={beta} h={h} dandelin={dandelin} u={u} view={view} />
           </Canvas>
         </div>

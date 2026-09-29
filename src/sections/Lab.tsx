@@ -84,7 +84,7 @@ export default function Lab() {
               {line(E.minorVertices[0], E.minorVertices[1], { strokeWidth: 1, strokeDasharray: '6 4' })}
               <text
                 x={(X(h) + X(E.majorVertices[1].x)) / 2 + (E.horizontal ? 0 : 10)}
-                y={(Y(k) + Y(E.majorVertices[1].y)) / 2 + (E.horizontal ? 22 : 0)}
+                y={(Y(k) + Y(E.majorVertices[1].y)) / 2 + (E.horizontal ? -10 : 0)}
                 fontSize={16}
                 fontWeight={700}
               >
