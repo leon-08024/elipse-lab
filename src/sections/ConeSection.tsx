@@ -120,10 +120,10 @@ function Scene({
       {/* plano de corte */}
       <group position={[0, h, 0]} rotation={[0, 0, beta * DEG]}>
         <mesh rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[14, 14]} />
-          <meshStandardMaterial color="#a78bfa" transparent opacity={0.16} side={THREE.DoubleSide} depthWrite={false} />
+          <planeGeometry args={[10, 10]} />
+          <meshStandardMaterial color="#a78bfa" transparent opacity={0.2} side={THREE.DoubleSide} depthWrite={false} />
         </mesh>
-        <gridHelper args={[14, 14, '#a78bfa', '#4c3d7a']} />
+        <gridHelper args={[10, 10, '#a78bfa', '#4c3d7a']} />
       </group>
 
       {/* curva de interseção */}
@@ -181,7 +181,7 @@ function Scene({
         </group>
       )}
 
-      <OrbitControls makeDefault enableDamping autoRotate={autoRotate} autoRotateSpeed={0.8} minDistance={4} maxDistance={40} />
+      <OrbitControls makeDefault target={[0, 1, 0]} enableDamping autoRotate={autoRotate} autoRotateSpeed={0.8} minDistance={4} maxDistance={40} />
     </>
   );
 }
@@ -230,7 +230,7 @@ export default function ConeSection() {
     const D = 13;
     setView({ pos: [c[0] + n[0] * D, c[1] + n[1] * D, c[2] + n[2] * D], look: c, id: ++viewId.current });
   };
-  const resetView = () => setView({ pos: [10, 6, 12], look: [0, 0.5, 0], id: ++viewId.current });
+  const resetView = () => setView({ pos: [9, 10, 12], look: [0, 1, 0], id: ++viewId.current });
 
   const presets = [
     { k: 'circunferência', b: 0 },
@@ -249,7 +249,7 @@ export default function ConeSection() {
       <div className="grid gap-5 xl:grid-cols-[1fr_380px]">
         <Panel className="relative overflow-hidden p-0">
           <div className="h-[62vh] min-h-[460px] w-full">
-            <Canvas camera={{ position: [10, 6, 12], fov: 45 }} dpr={[1, 2]}>
+            <Canvas camera={{ position: [9, 10, 12], fov: 45 }} dpr={[1, 2]}>
               <Scene
                 alpha={alpha}
                 beta={beta}

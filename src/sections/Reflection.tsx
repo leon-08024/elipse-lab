@@ -86,7 +86,8 @@ export default function Reflection() {
     const L = Math.hypot(nx, ny);
     normal = { p, n: { x: nx / L, y: ny / L } };
   }
-  const firstLeg = hl && hl.length > 2 ? dist(hl[0], hl[1]) + dist(hl[1], hl[2]) : 0;
+  // comprimento F₁ → P → F₂ do raio destacado (deve ser 2a)
+  const firstLeg = hl && hl.length > 1 ? dist(hl[0], hl[1]) + dist(hl[1], F2) : 0;
 
   return (
     <div>

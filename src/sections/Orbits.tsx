@@ -142,18 +142,20 @@ function Scene({
             <sphereGeometry args={[0.06 * Math.max(1, scale / 2), 16, 16]} />
             <meshBasicMaterial color="#f472b6" />
           </mesh>
-          <Html position={[-2 * c, 0, 0]} center style={{ pointerEvents: 'none' }}>
-            <div className="translate-y-5 font-mono text-xs text-pink-300">foco vazio</div>
-          </Html>
+          {2 * c > 0.6 && (
+            <Html position={[-2 * c, 0, 0]} center style={{ pointerEvents: 'none' }}>
+              <div className="translate-y-5 font-mono text-xs text-pink-300">foco vazio</div>
+            </Html>
+          )}
           <mesh position={[-c, 0, 0]}>
             <sphereGeometry args={[0.04 * Math.max(1, scale / 2), 16, 16]} />
             <meshBasicMaterial color="#34d399" />
           </mesh>
           <Html position={[a - c, 0, 0]} center style={{ pointerEvents: 'none' }}>
-            <div className="-translate-y-5 font-mono text-xs text-cyan-300">periélio</div>
+            <div className="translate-y-5 font-mono text-xs text-cyan-300">periélio</div>
           </Html>
           <Html position={[-a - c, 0, 0]} center style={{ pointerEvents: 'none' }}>
-            <div className="-translate-y-5 font-mono text-xs text-cyan-300">afélio</div>
+            <div className="translate-y-5 font-mono text-xs text-cyan-300">afélio</div>
           </Html>
         </group>
       )}

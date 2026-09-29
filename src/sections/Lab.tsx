@@ -167,12 +167,21 @@ export default function Lab() {
               {show.axes && (
                 <g fontSize={14} fontWeight={700}>
                   <text
-                    x={(X(h) + X(E.majorVertices[1].x)) / 2 + (E.horizontal ? 0 : 10)}
-                    y={(Y(k) + Y(E.majorVertices[1].y)) / 2 + (E.horizontal ? -8 : 0)}
+                    x={(X(h) + X(E.majorVertices[1].x)) / 2 + (E.horizontal ? 0 : -18)}
+                    y={(Y(k) + Y(E.majorVertices[1].y)) / 2 + (E.horizontal ? 20 : 0)}
                     fill="#22d3ee"
                   >
                     {majorLabel}
                   </text>
+                  {!E.isCircle && (
+                    <text
+                      x={(X(h) + X(F2.x)) / 2 + (E.horizontal ? -4 : 10)}
+                      y={(Y(k) + Y(F2.y)) / 2 + (E.horizontal ? -8 : 4)}
+                      fill="#facc15"
+                    >
+                      c
+                    </text>
+                  )}
                   <text
                     x={(X(h) + X(E.minorVertices[1].x)) / 2 + (E.horizontal ? -16 : 0)}
                     y={(Y(k) + Y(E.minorVertices[1].y)) / 2 + (E.horizontal ? 0 : -8)}

@@ -38,7 +38,7 @@ body {
     @apply rounded-xl border border-white/10 bg-black/20 px-3 py-2;
   }
   .stat-label {
-    @apply text-[11px] uppercase tracking-wider text-slate-400;
+    @apply text-xs text-slate-400;
   }
   .stat-value {
     @apply font-mono text-base text-slate-100;
