@@ -1,7 +1,28 @@
-import { useMemo, type ReactNode } from 'react';
+import { createContext, useContext, useMemo, type ReactNode } from 'react';
 import katex from 'katex';
 
-/** Renderiza LaTeX com KaTeX. */
+/* ---------- Contexto "Avançado" (rodapé da janela) ---------- */
+export const AdvancedContext = createContext(false);
+export const useAdvanced = () => useContext(AdvancedContext);
+
+/** Conteúdo extra, só aparece com "Avançado" aberto. */
+export function More({ children }: { children: ReactNode }) {
+  const open = useAdvanced();
+  if (!open) return null;
+  return <div className="mt-6 border-t border-black pt-5">{children}</div>;
+}
+
+/* ---------- Layout de uma seção: palco + coluna de controles ---------- */
+export function Stage({ children, controls }: { children: ReactNode; controls?: ReactNode }) {
+  return (
+    <div className={`grid gap-6 ${controls ? 'lg:grid-cols-[minmax(0,1fr)_236px]' : ''}`}>
+      <div className="relative flex h-[calc(100vh-258px)] min-h-[380px] items-center justify-center">{children}</div>
+      {controls && <div className="flex flex-col gap-5">{controls}</div>}
+    </div>
+  );
+}
+
+/* ---------- Primitivas ---------- */
 export function Tex({ children, block = false, className = '' }: { children: string; block?: boolean; className?: string }) {
   const html = useMemo(
     () => katex.renderToString(children, { displayMode: block, throwOnError: false, strict: false }),
@@ -10,6 +31,8 @@ export function Tex({ children, block = false, className = '' }: { children: str
   return <span className={className} dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
+const num = (v: number, d: number) => v.toFixed(d).replace('.', ',');
+
 export function Slider({
   label,
   value,
@@ -17,10 +40,8 @@ export function Slider({
   max,
   step = 0.1,
   onChange,
-  color = '#22d3ee',
-  suffix = '',
   digits = 1,
-  hint,
+  suffix = '',
 }: {
   label: ReactNode;
   value: number;
@@ -28,103 +49,109 @@ export function Slider({
   max: number;
   step?: number;
   onChange: (v: number) => void;
-  color?: string;
-  suffix?: string;
   digits?: number;
-  hint?: ReactNode;
+  suffix?: string;
 }) {
-  const p = ((value - min) / (max - min)) * 100;
   return (
     <label className="block">
-      <div className="mb-1.5 flex items-baseline justify-between text-sm">
-        <span className="font-medium text-slate-200">{label}</span>
-        <span className="font-mono text-sm" style={{ color }}>
-          {value.toFixed(digits).replace('.', ',')}
+      <div className="label mb-1 flex justify-between">
+        <span>{label}</span>
+        <span className="font-normal">
+          {num(value, digits)}
           {suffix}
         </span>
       </div>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        style={{ ['--c' as string]: color, ['--p' as string]: `${p}%` }}
-      />
-      {hint && <div className="mt-1 text-xs text-slate-400">{hint}</div>}
+      <input type="range" min={min} max={max} step={step} value={value} onChange={(e) => onChange(Number(e.target.value))} />
     </label>
   );
 }
 
-export function Toggle({
-  label,
-  checked,
-  onChange,
-  color = '#22d3ee',
-}: {
-  label: ReactNode;
-  checked: boolean;
-  onChange: (v: boolean) => void;
-  color?: string;
-}) {
+export function Checkbox({ label, checked, onChange }: { label: ReactNode; checked: boolean; onChange: (v: boolean) => void }) {
   return (
-    <button
-      type="button"
-      onClick={() => onChange(!checked)}
-      className={`flex items-center gap-2 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition ${
-        checked ? 'border-white/20 bg-white/10 text-slate-100' : 'border-white/5 bg-transparent text-slate-500'
-      }`}
-    >
-      <span
-        className="h-2.5 w-2.5 rounded-full transition"
-        style={{ background: checked ? color : 'transparent', boxShadow: checked ? `0 0 10px ${color}` : 'none', border: `1.5px solid ${color}` }}
-      />
-      {label}
+    <button type="button" onClick={() => onChange(!checked)} className="label flex items-center gap-2.5 text-left">
+      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded border border-black bg-white">
+        {checked && (
+          <svg viewBox="0 0 12 10" className="crisp h-3 w-3.5">
+            <path d="M0 5h2v1h1v1h1v1h1v-2h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h2v2h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-2v-1h-1v-1h-1v-1h-1v-1h-1z" />
+          </svg>
+        )}
+      </span>
+      <span className="font-normal">{label}</span>
     </button>
   );
 }
 
-export function SectionHeader({ kicker, title, children }: { kicker: string; title: ReactNode; children?: ReactNode }) {
+export function RadioGroup<T extends string>({
+  options,
+  value,
+  onChange,
+}: {
+  options: { value: T; label: ReactNode }[];
+  value: T;
+  onChange: (v: T) => void;
+}) {
   return (
-    <header className="mb-6">
-      <div className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-300/80">{kicker}</div>
-      <h2 className="font-display text-3xl font-bold tracking-tight text-white md:text-4xl">{title}</h2>
-      {children && <div className="mt-3 max-w-3xl text-slate-300">{children}</div>}
-    </header>
+    <div className="flex flex-col gap-2">
+      {options.map((o) => (
+        <button key={o.value} type="button" onClick={() => onChange(o.value)} className="label flex items-center gap-2.5 text-left font-normal">
+          <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-black bg-white">
+            {value === o.value && <span className="h-2 w-2 rounded-full bg-black" />}
+          </span>
+          {o.label}
+        </button>
+      ))}
+    </div>
   );
 }
 
-export function Stat({ label, value, color }: { label: ReactNode; value: ReactNode; color?: string }) {
+export function Stepper({ label, value, min, max, step = 1, onChange }: { label: ReactNode; value: number; min: number; max: number; step?: number; onChange: (v: number) => void }) {
+  const tri = (up: boolean) => (
+    <svg viewBox="0 0 8 5" className="crisp h-[5px] w-2">
+      <path d={up ? 'M4 0L8 5H0z' : 'M0 0h8L4 5z'} />
+    </svg>
+  );
   return (
-    <div className="stat">
-      <div className="stat-label">{label}</div>
-      <div className="stat-value" style={color ? { color } : undefined}>
-        {value}
+    <div className="flex items-center justify-between">
+      <span className="label">{label}</span>
+      <div className="flex">
+        <div className="os flex h-6 w-12 items-center justify-center border border-black bg-white text-sm">{value}</div>
+        <div className="-ml-px flex flex-col">
+          <button type="button" className="flex h-3 w-6 items-center justify-center border border-black bg-white active:bg-black active:[&_path]:fill-white" onClick={() => onChange(Math.min(max, value + step))}>
+            {tri(true)}
+          </button>
+          <button type="button" className="-mt-px flex h-3 w-6 items-center justify-center border border-black bg-white active:bg-black active:[&_path]:fill-white" onClick={() => onChange(Math.max(min, value - step))}>
+            {tri(false)}
+          </button>
+        </div>
       </div>
     </div>
   );
 }
 
-export function Panel({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <div className={`glass p-5 ${className}`}>{children}</div>;
-}
-
-/** Caixa "No mundo real" / "Ligação com o modelo físico". */
-export function Callout({ icon, title, children, tone = 'cyan' }: { icon: string; title: string; children: ReactNode; tone?: 'cyan' | 'pink' | 'violet' | 'amber' }) {
-  const tones = {
-    cyan: 'border-cyan-400/30 bg-cyan-400/5',
-    pink: 'border-pink-400/30 bg-pink-400/5',
-    violet: 'border-violet-400/30 bg-violet-400/5',
-    amber: 'border-amber-400/30 bg-amber-400/5',
-  } as const;
+/** Leitura principal (número/fórmula em destaque). */
+export function Readout({ label, children, invert = false }: { label?: ReactNode; children: ReactNode; invert?: boolean }) {
   return (
-    <div className={`rounded-2xl border p-4 ${tones[tone]}`}>
-      <div className="mb-1 flex items-center gap-2 text-sm font-semibold text-white">
-        <span className="text-lg">{icon}</span>
-        {title}
-      </div>
-      <div className="text-sm leading-relaxed text-slate-300">{children}</div>
+    <div className={`rounded border border-black px-3 py-2 ${invert ? 'bg-black text-white' : 'bg-white'}`}>
+      {label && <div className="os text-xs">{label}</div>}
+      <div className="os text-xl font-bold leading-tight">{children}</div>
     </div>
   );
+}
+
+/** Tabela simples chave → valor para o modo Avançado. */
+export function Facts({ rows }: { rows: [ReactNode, ReactNode][] }) {
+  return (
+    <div className="grid gap-x-8 gap-y-1 sm:grid-cols-2">
+      {rows.map(([k, v], i) => (
+        <div key={i} className="flex items-baseline justify-between gap-4 border-b border-dotted border-black py-1">
+          <span className="os text-sm">{k}</span>
+          <span>{v}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function Note({ children }: { children: ReactNode }) {
+  return <p className="mt-4 max-w-2xl text-[15px] leading-relaxed">{children}</p>;
 }

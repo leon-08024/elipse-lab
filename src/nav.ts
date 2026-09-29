@@ -1,12 +1,15 @@
 export type SectionId = 'inicio' | 'cone' | 'jardineiro' | 'laboratorio' | 'refletora' | 'orbitas' | 'geogebra' | 'desafio';
 
-export const SECTIONS: { id: SectionId; label: string; icon: string; etapa: string }[] = [
-  { id: 'inicio', label: 'Início', icon: '◎', etapa: 'Etapa 1' },
-  { id: 'cone', label: 'Cone de Apolônio', icon: '△', etapa: 'Etapa 1 · Bônus' },
-  { id: 'jardineiro', label: 'Jardineiro', icon: '✎', etapa: 'Etapa 2 ↔ 3' },
-  { id: 'laboratorio', label: 'Laboratório', icon: '⚗', etapa: 'Etapa 3' },
-  { id: 'refletora', label: 'Prop. Refletora', icon: '✦', etapa: 'Etapa 3' },
-  { id: 'orbitas', label: 'Órbitas', icon: '☉', etapa: 'Mundo real' },
-  { id: 'geogebra', label: 'GeoGebra', icon: '⌗', etapa: 'Etapa 3' },
-  { id: 'desafio', label: 'Desafio', icon: '🏆', etapa: 'Etapa 4' },
+/** label = trilho lateral; title = barra de título da janela */
+export const SECTIONS: { id: SectionId; label: string; title: string }[] = [
+  { id: 'inicio', label: 'Início', title: 'Elipse' },
+  { id: 'cone', label: 'Cone', title: 'Cone de Apolônio' },
+  { id: 'jardineiro', label: 'Barbante', title: 'Método do Jardineiro' },
+  { id: 'laboratorio', label: 'Parâmetros', title: 'Parâmetros' },
+  { id: 'refletora', label: 'Reflexão', title: 'Propriedade Refletora' },
+  { id: 'orbitas', label: 'Órbitas', title: 'Órbitas de Kepler' },
+  { id: 'geogebra', label: 'GeoGebra', title: 'GeoGebra' },
+  { id: 'desafio', label: 'Desafio', title: 'Desafio da Turma' },
 ];
+
+export const REPO_URL = 'https://github.com/leon-08024/elipse-lab';
