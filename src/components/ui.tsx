@@ -5,16 +5,11 @@ import katex from 'katex';
 export const AdvancedContext = createContext<{ open: boolean; toggle: () => void }>({ open: false, toggle: () => {} });
 export const useAdvanced = () => useContext(AdvancedContext).open;
 
-/** Conteúdo extra, só aparece com "Avançado" aberto (abaixo do palco). */
+/** Conteúdo extra, só aparece com "Avançado" aberto (tecla A), abaixo do palco. */
 export function More({ children }: { children: ReactNode }) {
   const open = useAdvanced();
   if (!open) return null;
   return <div className="border-t border-black p-6">{children}</div>;
-}
-
-function AdvancedToggle() {
-  const { open, toggle } = useContext(AdvancedContext);
-  return <Checkbox label="Avançado" checked={open} onChange={toggle} />;
 }
 
 /* ---------- Layout de uma seção: palco em tela cheia + coluna de controles ---------- */
@@ -23,9 +18,6 @@ export function Stage({ children, controls }: { children: ReactNode; controls?: 
     return (
       <div className="relative h-screen min-h-[380px]">
         {children}
-        <div className="absolute bottom-3 right-3 rounded border border-black bg-white px-3 py-1.5">
-          <AdvancedToggle />
-        </div>
       </div>
     );
   }
@@ -34,9 +26,6 @@ export function Stage({ children, controls }: { children: ReactNode; controls?: 
       <div className="relative h-[70vh] min-h-[380px] lg:h-full">{children}</div>
       <aside className="os-scroll flex flex-col gap-5 overflow-y-auto border-t border-black p-5 lg:border-l lg:border-t-0">
         {controls}
-        <div className="mt-auto border-t border-black pt-4">
-          <AdvancedToggle />
-        </div>
       </aside>
     </div>
   );

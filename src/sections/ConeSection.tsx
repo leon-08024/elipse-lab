@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { Html, Line, OrbitControls } from '@react-three/drei';
-import { Checkbox, Facts, More, Note, RadioGroup, Readout, Slider, Stage, Tex } from '../components/ui';
-import { conicKind, dandelinSpheres, planeNormal, sectionCurve, sectionEccentricity, type ConicKind, type Vec3 } from '../math/cone';
+import { Checkbox, Facts, More, Note, Readout, Slider, Stage, Tex } from '../components/ui';
+import { conicKind, dandelinSpheres, planeNormal, sectionCurve, sectionEccentricity, type Vec3 } from '../math/cone';
 import { fmt } from '../math/ellipse';
 
 const H = 5;
@@ -148,11 +148,20 @@ function Scene({ alpha, beta, h, dandelin, u, view }: { alpha: number; beta: num
   );
 }
 
-const KINDS: ConicKind[] = ['circunferência', 'elipse', 'parábola', 'hipérbole'];
+const BETA_MIN = 1;
+
+/**
+ * Maior inclinação β em que o corte ainda é uma elipse inteira dentro do cone desenhado:
+ * o vértice mais alto fica em y = h / (1 − tan α · tan β) ≤ H. Também fica abaixo de 90° − α (parábola).
+ */
+function betaMax(alpha: number, h: number) {
+  const fit = Math.atan((1 - h / H) / Math.tan(alpha * DEG)) / DEG;
+  return Math.max(BETA_MIN + 1, Math.floor(Math.min(fit, 90 - alpha) - 1));
+}
 
 export default function ConeSection() {
   const [alpha, setAlpha] = useState(30);
-  const [beta, setBeta] = useState(25);
+  const [betaRaw, setBeta] = useState(20);
   const [h, setH] = useState(2.8);
   const [dandelin, setDandelin] = useState(true);
   const [u, setU] = useState(0);
@@ -171,10 +180,11 @@ export default function ConeSection() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  // Só elipse: β fica sempre no intervalo em que o corte é uma elipse completa.
+  const maxBeta = betaMax(alpha, h);
+  const beta = Math.min(Math.max(betaRaw, BETA_MIN), maxBeta);
   const kind = conicKind(alpha, beta);
   const limit = 90 - alpha;
-  const setKind = (k: ConicKind) =>
-    setBeta(k === 'circunferência' ? 0 : k === 'elipse' ? Math.round(limit * 0.45) : k === 'parábola' ? limit : Math.min(89, limit + 18));
 
   const measured = useMemo(() => {
     if (kind !== 'elipse') return null;
@@ -196,16 +206,11 @@ export default function ConeSection() {
       <Stage
         controls={
           <>
-            <Readout invert>
-              <span className="capitalize">{kind}</span>
+            <Readout label="elipse" invert>
+              e = {fmt(sectionEccentricity(alpha, beta), 2)}
             </Readout>
-            <RadioGroup
-              value={kind}
-              onChange={setKind}
-              options={KINDS.map((k) => ({ value: k, label: <span className="capitalize">{k}</span> }))}
-            />
             <div className="flex flex-col gap-4 border-t border-black pt-4">
-              <Slider label="Inclinação β" value={beta} min={0} max={89} step={0.5} suffix="°" onChange={setBeta} />
+              <Slider label="Inclinação β" value={beta} min={BETA_MIN} max={maxBeta} step={0.5} suffix="°" onChange={setBeta} />
               <Slider label="Abertura α" value={alpha} min={15} max={45} step={0.5} suffix="°" onChange={setAlpha} />
               <Slider label="Altura" value={h} min={0.8} max={4} onChange={setH} />
             </div>

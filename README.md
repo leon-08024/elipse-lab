@@ -4,12 +4,12 @@ Visualização interativa da **elipse** para o projeto *Cônicas no Mundo Real: 
 
 | Seção | O que mostra | Etapa |
 |---|---|---|
-| Cone de Apolônio (3D) | Plano cortando o cone, classificação das cônicas, esferas de Dandelin | 1 · Bônus |
+| Cone de Apolônio (3D) | Plano cortando o cone em uma elipse, esferas de Dandelin | 1 · Bônus |
 | Parâmetros | Sliders a, b, h, k; focos, vértices, eixos, diretrizes; 3 formas da equação | 3 |
 | Órbitas (3D) | Leis de Kepler com dados reais (NASA/JPL) | Mundo real |
 | GeoGebra | A mesma construção no GeoGebra + comandos passo a passo | 3 |
 
-**Atalhos:** `←` / `→` (ou passador de slides) trocam de seção · `A` (ou a caixa "Avançado" nos controles) abre os detalhes e fórmulas · `F` tela cheia.
+**Atalhos:** `←` / `→` (ou passador de slides) trocam de seção · `A` abre os detalhes e fórmulas · `F` tela cheia.
 
 ## Rodar localmente
 
