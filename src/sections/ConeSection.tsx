@@ -77,7 +77,6 @@ function Scene({ alpha, beta, h, dandelin, u, view }: { alpha: number; beta: num
   const curve = segments[0] ?? [];
   const P = closed ? pointOn(curve, u) ?? null : null;
 
-  const ring = (y: number, r: number) => Array.from({ length: 97 }, (_, i) => [r * Math.cos((i / 96) * 2 * Math.PI), y, r * Math.sin((i / 96) * 2 * Math.PI)] as Vec3);
   const generators = useMemo(
     () =>
       Array.from({ length: 24 }, (_, i) => {
@@ -96,9 +95,6 @@ function Scene({ alpha, beta, h, dandelin, u, view }: { alpha: number; beta: num
     return lines;
   }, []);
 
-  const ca = Math.cos(alpha * DEG);
-  const sa = Math.sin(alpha * DEG);
-
   return (
     <>
       <CameraRig target={view} />
@@ -106,8 +102,6 @@ function Scene({ alpha, beta, h, dandelin, u, view }: { alpha: number; beta: num
       {generators.map((g, i) => (
         <Line key={i} points={g} color="#000" lineWidth={0.6} />
       ))}
-      <Line points={ring(H, R)} color="#000" lineWidth={1.2} />
-      <Line points={ring(-H, R)} color="#000" lineWidth={1.2} />
 
       <group position={[0, h, 0]} rotation={[0, 0, beta * DEG]}>
         {planeGrid.map((l, i) => (
@@ -122,7 +116,6 @@ function Scene({ alpha, beta, h, dandelin, u, view }: { alpha: number; beta: num
       {spheres.map((s, i) => (
         <group key={i}>
           <WireSphere center={s.center} r={s.radius} />
-          <Line points={ring(s.center[1] * ca * ca, s.center[1] * ca * sa)} color="#000" lineWidth={1.5} />
           <mesh position={s.focus}>
             <sphereGeometry args={[0.1, 16, 16]} />
             <meshBasicMaterial color="#000" />
