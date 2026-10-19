@@ -216,7 +216,7 @@ export default function ConeSection() {
           </>
         }
       >
-        <div className="frame h-full w-full">
+        <div className="h-full w-full">
           <Canvas camera={{ position: [6.5, 7.5, 8.5], fov: 45 }} dpr={[1, 2]} gl={{ antialias: false }}>
             <Scene alpha={alpha} beta={beta} h={h} dandelin={dandelin} u={u} view={view} />
           </Canvas>

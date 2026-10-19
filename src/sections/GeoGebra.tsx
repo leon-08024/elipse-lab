@@ -96,7 +96,7 @@ export default function GeoGebra() {
   return (
     <>
       <Stage>
-        <div ref={holder} className="frame relative h-full w-full overflow-hidden">
+        <div ref={holder} className="relative h-full w-full overflow-hidden">
           <div id="ggb-element" />
           {status !== 'ready' && (
             <div className="os absolute inset-0 flex flex-col items-center justify-center gap-3 bg-white text-sm">

@@ -9,7 +9,7 @@ Visualização interativa da **elipse** para o projeto *Cônicas no Mundo Real: 
 | Órbitas (3D) | Leis de Kepler com dados reais (NASA/JPL) | Mundo real |
 | GeoGebra | A mesma construção no GeoGebra + comandos passo a passo | 3 |
 
-**Atalhos:** `←` / `→` (ou passador de slides) trocam de seção · `A` abre o painel Avançado (detalhes e fórmulas) · `F` tela cheia.
+**Atalhos:** `←` / `→` (ou passador de slides) trocam de seção · `A` (ou a caixa "Avançado" nos controles) abre os detalhes e fórmulas · `F` tela cheia.
 
 ## Rodar localmente
 

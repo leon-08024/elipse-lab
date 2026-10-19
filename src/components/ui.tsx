@@ -1,23 +1,43 @@
 import { createContext, useContext, useMemo, type ReactNode } from 'react';
 import katex from 'katex';
 
-/* ---------- Contexto "Avançado" (rodapé da janela) ---------- */
-export const AdvancedContext = createContext(false);
-export const useAdvanced = () => useContext(AdvancedContext);
+/* ---------- Contexto "Avançado" ---------- */
+export const AdvancedContext = createContext<{ open: boolean; toggle: () => void }>({ open: false, toggle: () => {} });
+export const useAdvanced = () => useContext(AdvancedContext).open;
 
-/** Conteúdo extra, só aparece com "Avançado" aberto. */
+/** Conteúdo extra, só aparece com "Avançado" aberto (abaixo do palco). */
 export function More({ children }: { children: ReactNode }) {
   const open = useAdvanced();
   if (!open) return null;
-  return <div className="mt-6 border-t border-black pt-5">{children}</div>;
+  return <div className="border-t border-black p-6">{children}</div>;
 }
 
-/* ---------- Layout de uma seção: palco + coluna de controles ---------- */
+function AdvancedToggle() {
+  const { open, toggle } = useContext(AdvancedContext);
+  return <Checkbox label="Avançado" checked={open} onChange={toggle} />;
+}
+
+/* ---------- Layout de uma seção: palco em tela cheia + coluna de controles ---------- */
 export function Stage({ children, controls }: { children: ReactNode; controls?: ReactNode }) {
+  if (!controls) {
+    return (
+      <div className="relative h-screen min-h-[380px]">
+        {children}
+        <div className="absolute bottom-3 right-3 rounded border border-black bg-white px-3 py-1.5">
+          <AdvancedToggle />
+        </div>
+      </div>
+    );
+  }
   return (
-    <div className={`grid gap-6 ${controls ? 'lg:grid-cols-[minmax(0,1fr)_236px]' : ''}`}>
-      <div className="relative flex h-[calc(100vh-150px)] min-h-[380px] items-center justify-center">{children}</div>
-      {controls && <div className="flex flex-col gap-5">{controls}</div>}
+    <div className="grid lg:h-screen lg:grid-cols-[minmax(0,1fr)_260px]">
+      <div className="relative h-[70vh] min-h-[380px] lg:h-full">{children}</div>
+      <aside className="os-scroll flex flex-col gap-5 overflow-y-auto border-t border-black p-5 lg:border-l lg:border-t-0">
+        {controls}
+        <div className="mt-auto border-t border-black pt-4">
+          <AdvancedToggle />
+        </div>
+      </aside>
     </div>
   );
 }

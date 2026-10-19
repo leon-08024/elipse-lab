@@ -161,7 +161,7 @@ export default function Orbits() {
           </>
         }
       >
-        <div className="frame h-full w-full">
+        <div className="h-full w-full">
           <Canvas key={halley ? 'h' : 'p'} camera={{ position: [0, 10, 4.5], fov: 50 }} dpr={[1, 2]} gl={{ antialias: false }}>
             <Scene scale={scale} timeRef={timeRef} playing={playing} speed={speed} selected={selected} spokes={spokes} />
           </Canvas>

@@ -73,9 +73,6 @@ svg text {
   .label {
     @apply font-os tracking-[0.02em] text-[14px] font-bold;
   }
-  .frame {
-    @apply border border-black bg-white;
-  }
 }
 
 /* Slider: linha de 1px + alça quadrada 16×16 */
@@ -119,9 +116,6 @@ input[type='range']:focus {
 }
 
 /* Scrollbar do sistema */
-.os-scroll {
-  scrollbar-gutter: stable;
-}
 .os-scroll::-webkit-scrollbar {
   width: 20px;
 }
