@@ -8,6 +8,9 @@ import { fmt } from '../math/ellipse';
 const H = 5;
 const DEG = Math.PI / 180;
 const d3 = (p: Vec3, q: Vec3) => Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]);
+/** Ponto da curva no parâmetro u ∈ [0, 1) (u fora do intervalo é ajustado). */
+const pointOn = (curve: Vec3[], u: number): Vec3 | undefined =>
+  curve[Math.min(curve.length - 1, Math.max(0, Math.floor(u * (curve.length - 1))))];
 
 type CamTarget = { pos: Vec3; look: Vec3; id: number } | null;
 
@@ -72,7 +75,7 @@ function Scene({ alpha, beta, h, dandelin, u, view }: { alpha: number; beta: num
   const closed = kind === 'elipse' || kind === 'circunferência';
   const spheres = useMemo(() => (closed && dandelin ? dandelinSpheres(alpha, beta, h) : []), [alpha, beta, h, closed, dandelin]);
   const curve = segments[0] ?? [];
-  const P = closed && curve.length ? curve[Math.floor(u * (curve.length - 1))] : null;
+  const P = closed ? pointOn(curve, u) ?? null : null;
 
   const ring = (y: number, r: number) => Array.from({ length: 97 }, (_, i) => [r * Math.cos((i / 96) * 2 * Math.PI), y, r * Math.sin((i / 96) * 2 * Math.PI)] as Vec3);
   const generators = useMemo(
@@ -160,7 +163,8 @@ export default function ConeSection() {
     let raf = 0;
     const start = performance.now();
     const loop = (now: number) => {
-      setU((((now - start) / 1000) * 0.08) % 1);
+      // o timestamp do rAF pode ser anterior a `start` → clamp em 0 para não gerar u < 0
+      setU(((Math.max(0, now - start) / 1000) * 0.08) % 1);
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
@@ -177,7 +181,8 @@ export default function ConeSection() {
     const sp = dandelinSpheres(alpha, beta, h);
     const curve = sectionCurve(alpha, beta, h, H)[0];
     if (!curve || sp.length < 2) return null;
-    const P = curve[Math.floor(u * (curve.length - 1))];
+    const P = pointOn(curve, u);
+    if (!P) return null;
     return { d1: d3(P, sp[0].focus), d2: d3(P, sp[1].focus) };
   }, [alpha, beta, h, u, kind]);
 
