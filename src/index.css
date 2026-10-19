@@ -6,8 +6,6 @@
 :root {
   --ink: #000;
   --paper: #fff;
-  --bezel: #282725;
-  --dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'%3E%3Crect width='4' height='4' fill='%23fff'/%3E%3Cpath d='M0 0h1v1H0zM2 0h1v1H2zM1 1h1v1H1zM3 1h1v1H3zM0 2h1v1H0zM2 2h1v1H2zM1 3h1v1H1zM3 3h1v1H3z' fill='%23000'/%3E%3C/svg%3E");
   color-scheme: light;
 }
 
@@ -20,7 +18,7 @@ body,
 }
 
 body {
-  background: var(--bezel);
+  background: var(--paper);
   color: var(--ink);
   font-family: Verdana, Geneva, sans-serif;
   font-size: 15px;
@@ -34,21 +32,6 @@ body {
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: unset;
   font-smooth: never;
-}
-
-.dither {
-  background-color: #fff;
-  background-image: var(--dither);
-  background-size: 4px 4px;
-  image-rendering: pixelated;
-}
-
-/* Barra de título com listras horizontais (1px preto, 2px branco) */
-.stripes {
-  background-image: repeating-linear-gradient(to bottom, #000 0 1px, #fff 1px 3px);
-  background-size: 100% 16px;
-  background-repeat: no-repeat;
-  background-position: 0 50%;
 }
 
 svg {
@@ -144,8 +127,6 @@ input[type='range']:focus {
 }
 .os-scroll::-webkit-scrollbar-track {
   background-color: #fff;
-  background-image: var(--dither);
-  background-size: 4px 4px;
   border-left: 1px solid #000;
 }
 .os-scroll::-webkit-scrollbar-thumb {
@@ -172,24 +153,6 @@ input[type='range']:focus {
   font-size: 1.1em;
 }
 
-/* Geometria das janelas: 62% centralizada, com mínimo confortável para as visualizações */
-.window-geom {
-  top: 28px;
-  bottom: 28px;
-  left: 50%;
-  width: min(max(62%, 1060px), calc(100% - 48px));
-  transform: translateX(-50%);
-}
-.window-back {
-  top: 4px;
-  bottom: 52px;
-  left: calc(50% - 24px);
-}
-@media (min-width: 1280px) {
-  .window-geom {
-    width: min(max(62%, 1060px), calc(100% - 250px));
-  }
-}
 .os-scroll-none {
   scrollbar-width: none;
 }
