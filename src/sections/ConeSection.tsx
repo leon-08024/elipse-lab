@@ -42,6 +42,16 @@ function Scene({ alpha, beta, h, dandelin, u, view }: { alpha: number; beta: num
   const kind = conicKind(alpha, beta);
   const segments = useMemo(() => sectionCurve(alpha, beta, h, H), [alpha, beta, h]);
   const R = H * Math.tan(alpha * DEG);
+  const rims = useMemo(
+    () =>
+      [H, -H].map((y) =>
+        Array.from({ length: 129 }, (_, i) => {
+          const th = (i / 128) * Math.PI * 2;
+          return [R * Math.cos(th), y, R * Math.sin(th)] as Vec3;
+        }),
+      ),
+    [R],
+  );
   const closed = kind === 'elipse' || kind === 'circunferência';
   const spheres = useMemo(() => (closed && dandelin ? dandelinSpheres(alpha, beta, h) : []), [alpha, beta, h, closed, dandelin]);
   const curve = segments[0] ?? [];
@@ -71,6 +81,10 @@ function Scene({ alpha, beta, h, dandelin, u, view }: { alpha: number; beta: num
       <color attach="background" args={['#ffffff']} />
       {generators.map((g, i) => (
         <Line key={i} points={g} color="#000" lineWidth={0.6} />
+      ))}
+      {/* borda circular na boca de cada folha do cone (fecha as geratrizes) */}
+      {rims.map((r, i) => (
+        <Line key={`rim${i}`} points={r} color="#000" lineWidth={1.5} />
       ))}
 
       <group position={[0, h, 0]} rotation={[0, 0, beta * DEG]}>
