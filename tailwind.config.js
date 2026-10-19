@@ -8,8 +8,6 @@ export default {
         body: ['Verdana', 'Geneva', 'sans-serif'],
       },
       colors: {
-        bezel: '#282725',
-        signal: '#f37725', // status
         link: '#3685c5', // links
       },
     },

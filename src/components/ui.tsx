@@ -16,7 +16,7 @@ export function More({ children }: { children: ReactNode }) {
 export function Stage({ children, controls }: { children: ReactNode; controls?: ReactNode }) {
   return (
     <div className={`grid gap-6 ${controls ? 'lg:grid-cols-[minmax(0,1fr)_236px]' : ''}`}>
-      <div className="relative flex h-[calc(100vh-258px)] min-h-[380px] items-center justify-center">{children}</div>
+      <div className="relative flex h-[calc(100vh-150px)] min-h-[380px] items-center justify-center">{children}</div>
       {controls && <div className="flex flex-col gap-5">{controls}</div>}
     </div>
   );
