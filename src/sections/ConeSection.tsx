@@ -38,36 +38,6 @@ function Label({ at, text }: { at: Vec3; text: string }) {
   );
 }
 
-/** Esfera em "arame": 3 paralelos + 4 meridianos. */
-function WireSphere({ center, r }: { center: Vec3; r: number }) {
-  const circles = useMemo(() => {
-    const out: Vec3[][] = [];
-    const N = 64;
-    for (const lat of [-0.5, 0, 0.5]) {
-      const y = r * Math.sin(lat);
-      const rr = r * Math.cos(lat);
-      out.push(Array.from({ length: N + 1 }, (_, i) => [rr * Math.cos((i / N) * 2 * Math.PI), y, rr * Math.sin((i / N) * 2 * Math.PI)] as Vec3));
-    }
-    for (let m = 0; m < 4; m++) {
-      const ph = (m / 4) * Math.PI;
-      out.push(
-        Array.from({ length: N + 1 }, (_, i) => {
-          const th = (i / N) * 2 * Math.PI;
-          return [r * Math.cos(th) * Math.cos(ph), r * Math.sin(th), r * Math.cos(th) * Math.sin(ph)] as Vec3;
-        }),
-      );
-    }
-    return out;
-  }, [r]);
-  return (
-    <group position={center}>
-      {circles.map((c, i) => (
-        <Line key={i} points={c} color="#000" lineWidth={1} dashed={i !== 1} dashSize={0.08} gapSize={0.08} />
-      ))}
-    </group>
-  );
-}
-
 function Scene({ alpha, beta, h, dandelin, u, view }: { alpha: number; beta: number; h: number; dandelin: boolean; u: number; view: CamTarget }) {
   const kind = conicKind(alpha, beta);
   const segments = useMemo(() => sectionCurve(alpha, beta, h, H), [alpha, beta, h]);
@@ -115,7 +85,6 @@ function Scene({ alpha, beta, h, dandelin, u, view }: { alpha: number; beta: num
 
       {spheres.map((s, i) => (
         <group key={i}>
-          <WireSphere center={s.center} r={s.radius} />
           <mesh position={s.focus}>
             <sphereGeometry args={[0.1, 16, 16]} />
             <meshBasicMaterial color="#000" />
@@ -207,7 +176,7 @@ export default function ConeSection() {
               <Slider label="Abertura α" value={alpha} min={15} max={45} step={0.5} suffix="°" onChange={setAlpha} />
               <Slider label="Altura" value={h} min={0.8} max={4} onChange={setH} />
             </div>
-            <Checkbox label="Esferas de Dandelin" checked={dandelin} onChange={setDandelin} />
+            <Checkbox label="Focos" checked={dandelin} onChange={setDandelin} />
             <div className="flex gap-3">
               <button className="btn flex-1 px-2" onClick={lookAtPlane}>
                 De frente
@@ -235,7 +204,7 @@ export default function ConeSection() {
           ]}
         />
         <Note>
-          As esferas de Dandelin tocam o cone e o plano: os pontos de contato com o plano são os focos. Por isso PF₁ + PF₂ não muda
+          Os focos são os pontos onde as esferas de Dandelin (tangentes ao cone e ao plano) tocam o plano. Por isso PF₁ + PF₂ não muda
           quando P percorre a curva.
         </Note>
       </More>
